@@ -1,0 +1,5 @@
+## MacOS 파일
+.DS_Store
+
+## python Cache파일
+__pycache__
