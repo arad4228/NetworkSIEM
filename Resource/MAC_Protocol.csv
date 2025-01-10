@@ -1,0 +1,254 @@
+EtherType,Organization,Protocol
+0x8940,IEEE 802.1 Chair  c/o RAC Administrator,Edge Control Protocol (ECP) defined in IEEE Std 802.1Q for use with IEEE
+0x0B07,University of Berkeley,Berkeley Reserved
+0x0B01,University of Berkeley,Real Time Internet Protocol scheme 2
+0x880B,US Robotics Corporation,PPP - IETF RFC 2637
+0x8910,IEEE 802.1 Working Group,Encapsulated Addresses for use with the Backbone Service Instance as defined in IEEE Std 802.1Q
+0x8913,Rohde & Schwarz SIT GmbH,The ethertype is used for an ethernet security protocol used by ethernet link encryption devices manufactured by Rohde & Schwarz.
+0x8911,Enea,LINX protocol
+0x88F5,IEEE 802.1 Chair,Multiple VLAN Registration Protocol (MVRP) defined in IEEE Std 802.1Q
+0x88B6,IEEE 802.1 Chair,Local Experimental EtherType 2 as defined in IEEE Std 802
+0x88CC,IEEE 802.1 Chair,Link Layer Discovery Protocol (LLDP) defined in IEEE Std 802.1AB
+0x22EA,IEEE 802.1 Chair,Stream Reservation Protocol (SRP) defined in IEEE Std 802.1Q
+0x88FB,International Electrotechnical Commission,IEC 62439 PRP protocol
+0x8955,Megapixel VR,High efficiency low latency proprietary streaming data distribution protocol
+0xF8DB,Schindler Elevator Ltd.,Real time protocol for control and safety functions for elevators and escalators
+0x8930,Google Inc.,Layer II protocol for data center switches
+0x22F0,IEEE 1722 Working Group,IEEE Std. 1722-2016 Transport Protocol for Time-Sensitive Applications in Bridged Local Area Networks
+0x892C,China Broadband Wireless IP Standard group,TLP (TePA based LAN Privacy) protocol
+0x893C,Coraid Inc.,Coraid Ethernet Console (CEC) protocol
+0x891C,Martin Professional A/S,Protocol for high bandwidth low latency transmission of video data to video wall display devices over an Ethernet network
+0x909B,VisionVera Information Technology Company Ltd.,V2V protocol invented by VisionVera
+0x88D8,Metro Ethernet Forum,Circuit Emulation Services over Ethernet (CESoETH)
+0x8900,Red Lion,Red Lion Controls Inc. proprietary
+0x8907,Zhejiang University,DRP (Distributed Redundancy Protocol)
+0x892F,International Electrotechnical Commission,High-availability Seamless Redundancy (HSR) protocol
+0x88CD,sercos international e.V.,SERCOS interface
+0xB4E3,Cable Television Laboratories Inc (CableLabs),Use for varies special communications on various projects
+0xE890,Telecor Inc.,Telecor Inc. eSeries Communication Protocol
+0xAEFE,CPRI Cooperation,Protocol specified by CPRI Industry Cooperation
+0xA0ED,IETF 6lo working group,IPv6 datagrams using LoWPAN encapsulation as defined in IETF RFC 4944
+0x88DB,Adtran Inc,Proprietary protocols (undisclosed)
+0xD28B,Arista Networks,Multiple proprietary protocols (under development)
+0x88E4,VIA Technologies Inc.,Via NeTworking Switch Management Protocol (VNTSMP)
+0x8949,Mellanox Technologies Inc.,Mellanox Remote Mirror Encapsulation
+0x88C8,Sony Interactive Entertainment Inc.,Proprietary protocol with two byte sub-type field
+0x888D,T11 Technical Committee,FC-BB family of standards
+0x88B8,IEC TC57,IEC 61850 for utility communication
+0x8146,Vrije Universiteit,Amoeba Distributed Operating System protocols
+0x8812,Hypercom Network Systems,Proprietary Integrated Enterprise Network (IEN) LAN-to-LAN protocols
+0x8950,ISO TC204 WG16,Fast Networking and Transport Protocol (FNTP)
+0x885C,Philips Medizin Systeme Boblingen GmbH,Real-time communication between medical devices
+0x893E,Coraid Inc.,EL (lightweight transport protocol for 9P protocol)
+0x8938,HDBaseT Alliance,HDBaseT Control and Management Protocol
+0x892E,Ozmo Devices,Protocol for USB type data and commands over IEEE802 link
+0x88B4,Instant Wireless Network Communications Co. Ltd.,WAI (new authentication protocol for IP based networks)
+0x22F3,IETF TRILL Working Group,TRILL protocol
+0x22EE,Huawei Technologies (Netherlands) B.V.,Protocol for transport network clients with 16-bit Subtype field
+0x22E8,RAD Data Communications Ltd.,Ethernet bonding (inverse multiplexing) protocol
+0x88AF,Life Racing Limited,Proprietary automotive control unit protocol
+0x891A,Mobile Wireless Group,Protocol for periodic packet sending with power savings
+0x88D9,Microsoft,Protocol for real-time and near-real time discovery control and eventing
+0x88CE,Level 5 Networks Inc.,Remote Direct Memory Access over Ethernet (RDMAoE)
+0x891E,CipherOptics,Undisclosed protocol
+0x0B05,University of Berkeley,Berkeley Reserved
+0x8870,IEEE 802.1 Working Group,LLC encapsulation as defined by IEEE Std 802.1AC
+0x890D,IEEE 802.11 Working Group,Management protocol as defined in IEEE Std 802.11
+0x88B5,IEEE 802.1 Chair,Local Experimental EtherType 1 as defined in IEEE Std 802
+0x894B,IEEE 802.1 Chair,Flow filtering tag (F-TAG) as defined in IEEE Std 802.1Q
+0x8929,IEEE 802.1 Chair,Multiple I-SID Registration Protocol (MIRP) as defined in IEEE Std 802.1Q
+0x22F2,Association of Radio Industries and Businesses (ARIB),HCfB (Header Compression for Broadcasting)
+0x890A,WIT,Protocol WIO For Building Automation
+0x0800,Xerox,IPv4 Internet Protocol Version
+0x86DD,USC/I,Internet Protocol Version 6 (IPV6)
+0xF5D2,Schweitzer Engineering Laboratories Inc.,Cryptographically protected transport of OT communications
+0x8908,Waves Audio LTD,Proprietary protocol with Workgroup ID Destination LUN Source LUN and Opcode fields
+0x88DC,IEEE P1609 WG (WAVE),Short Message Protocol (WSM)
+0x88AB,ETHERNET Powerlink Standarization Group (EPSG),ETHERNET Powerlink (EPL)
+0x86DD,USC/ISI,Internet Protocol Version 6 (IPV6)
+0x894F,Cisco Systems Inc,NSH (Network Service Header)
+0x8936,Ericsson AB,Protocol for exchange of radio data frames between network forwarding device and radio device
+0xED3E,IETF Routing Area,FoRCES inter-FE LFB type
+0x88BF,Proxim Corporation,Encapsulation of Ethernet packets between switch-like devices
+0x9999,Adtran Inc,Undisclosed protocols
+0x8932,Mellanox Technologies Inc.,Mellanox discovery and configuration protocol
+0x8927,Klavis Technologies,CopperLan protocol for command-and-control in music pro-audio and stage equipment
+0x8811,Hypercom Network Systems,Proprietary Integrated Enterprise Network (IEN) LAN-to-LAN protocols
+0x8816,Znyx Corporation,ZNYX Link-Layer Signaling
+0x894C,IEC – International Electrotechnical Commission,IEC 61375 TCN (Train Communication Network)
+0x8946,IETF TRILL Working Group,RBridge Channel protocol
+0x8945,Crypto AG,Protocol unavailable
+0x8941,Cambium Networks,Proprietary block-oriented point-to-point streaming protocol
+0x8896,Digigram,EtherSound protocol for professional audio over IT network
+0x892B,Schweitzer Engineering Laboratories Inc.,Protocol for mission critical Layer 2 messages in electric power systems
+0x88DD,Audio Engineering Society Inc.,AES50-2005 and other projects in development
+0x22F1,Association of Radio Industries and Businesses (ARIB),ROHC (Robust Header Compression)
+0x22EC,KERI (Korea Electrotechnology Research Institute),Power-Line Communication Conformance Testing Control Protocol Based on Ethernet Protocol
+0x22E1,Sandvine Incorporated,Undisclosed protocols
+0x22E0,NETCORE TNDUSTRAIL CO.LTD,Undisclosed protocol
+0x889B,Mindspeed Technologies,CSM_ENCAPS protocol
+0x889E,Remotec Inc.,Robot deterministic heartbeat and safety critical control and status protocol
+0x88AD,XiMeta Technology Americas Inc.,Proprietary communication protocol for secure data transmission
+0x88F2,Honeywell,WNSIA - Wireless Network for Secure Industrial Application protocol suite
+0x8916,Element Labs,PXL video data protocol
+0x8912,Gigle Semiconductor,Mediaxtream Specification protocols
+0x88FE,LS Industrial Systems. Co. Ltd.,Real-time Ethernet (RTE) protocol
+0x88F7,IEEE I&M Society TC9,Precision Clock Synchronization Protocol (IEEE 1588)
+0x88F0,IEEE P1451.0,Smart Transducer Interface for Sensors and Actuators
+0x88E0,Nortel,Ethernet Trunks
+0x88D3,Digidesign,Proprietary protocol for real-time communications
+0x88EA,Hewlett Packard Enterprise,New security authentication and encryption protocol at L2 layer
+0x9AC6,Tesla Inc.,TTP (Tesla Transport Protocol) over Ethernet
+0x88E7,IEEE 802.1 Chair,Backbone Service Instance Tag (I-TAG) as defined in IEEE Std 802.1Q
+0xE23B,IEEE 802.1 Chair,Media Access Control (MAC) Privacy protection protocol as specified in IEEE Std 802.1AE
+0x8909,Cisco Systems Inc,Cisco Metadata (CMD)
+0x0B03,University of Berkeley,IETF Parameter Negotiation
+0x88C7,IEEE 802.11 Working Group,RSNA Preauthentication as defined in IEEE Std 802.11
+0x88ED,Meshcom Technologies Inc,Meshcom Mesh Protocol (MMP)
+0xF1C1,IEEE 802.1 Chair,Redundancy tag (R-TAG) as defined in IEEE Std 802.1CB
+0x22E7,IEEE 802.1 Chair,Congestion Notification Message (CNM) as defined in IEEE Std 802.1Q
+0x22E9,IEEE 802.1 Chair,Congestion Notification Tag (CN-TAG) as defined in IEEE Std 802.1Q
+0x888E,IEEE 802.1 Chair,Port Access Entity (PAE) for Ethernet Access Protocol (EAP) over LAN (EAPOL) as defined in IEEE Std 802.1X
+0x8931,IC Plus Corp,IC Plus Management Protocol (IPMP)
+0x88A8,IEEE 802.1 Chair,Service VLAN Tag (S-TAG) or Backbone VLAN Tag (B-TAG) as defined in IEEE Std 802.1Q
+0x8952,IEEE 802.1 Chair,Distributed Relay Control Protocol (DRCP) as defined in IEEE Std 802.1AX
+0x88A4,Beckhoff Automation GmbH & Co KG,EtherCAT
+0x88FF,FUJITSU LIMITED,Protocol used for Fujitsu MAC Security and so on
+0x88F1,Rajant Corporation,BreadCrumb(R) Wireless Network
+0x886D,Intel Corporation,Intel Advanced Networking Services
+0x8137,Novell Inc,Internetwork Packet Exchange (IPX)
+0x8138,Novell Inc,Internetwork Packet Exchange (IPX)
+0x8915,Mellanox Technologies Inc,RoCE - RDMA over Converged Ethernet
+0x88E3,SIEMENS AG,MRP (medium redundancy protocol)
+0x9A22,IETF,TRILL Multi-Topology
+0xB382,Cisco Systems Inc,Private Protocol
+0x88B9,IEC TC57,IEC 61850 GSE management services
+0xC111,Soraa Inc,Protocol for managing and monitoring devices
+0xFC0F,Senetas Corporation Ltd,Proprietary protocol
+0xDDB3,Schweitzer Engineering Laboratories Inc,High-speed deterministic transport of OT communications through corporate IT Ethernet
+0x8956,Japan Cable Television Engineering Association,Protocol with Subtype and Version fields
+0x8CE4,Mellanox Technologies Inc,Protocol for embedding additional metadata in Ethernet frames
+0x8948,Mellanox Technologies Inc,EoIB: Ethernet over InfiniBand Protocol
+0xB7EA,Huawei Technologies Co Ltd,Protocol for control messages encapsulated as payload of GRE packets
+0x8925,General Dynamics Mission Systems,Fortress Mesh Protocol
+0x88E2,JAPAN RADIO CO LTD,JRC Layer two protocol
+0x8906,Cisco Systems Inc,FCoE - Fibre Channel over Ethernet
+0x8904,Cisco Systems Inc,BCN (Backward Congestion Notification) data frame tag
+0x8939,Cisco Systems,Generic Associated Channel (G-ACh) protocol encapsulation over Ethernet
+0x8820,APRESIA Systems Ltd,Proprietary protocols (PHDP VLTP MMRP)
+0x880F,Hypercom Network Systems,Proprietary Integrated Enterprise Network(IEN) LAN-to-LAN protocols
+0x8954,Datasat Technologies,Proprietary protocol with header describing packet type and version
+0x888B,Toshiba Corporation,Real-time control network protocol
+0x885B,Philips Medizin Systeme Boblingen GmbH,Real-time communication between medical devices
+0x8947,ETSI,GeoNetworking as defined in ETSI EN 302 636-4-1
+0x88FC,Accedian Network,Protocol with common header multiplexing various subprotocols
+0x8942,Big Switch Networks,Protocol with magic number length and type fields
+0x8937,Panasas,Protocol for periodic status messages between Panasas switch and blades
+0x892A,Roland SG Corporation,REAC (Roland Ethernet Audio Communication) protocol
+0x22F4,IETF TRILL Working Group,IS-IS (Intermediate System to Intermediate System)
+0x22EF,Anagran Inc,FSA signalling - Q.Flowstatesig
+0x22E3,Marvell Semiconductor Inc,Protocol for ITU-T G.9960 specification
+0x88D2,3GPP2,Protocol for cdma2000 Access Network Interfaces
+0x8924,iris-GmbH infrared & intelligent sensors,Vendor-specific protocol with multiple proprietary sub-protocols
+0x8922,VMware Inc,Protocol with magic number length and type fields
+0x890C,FibroLAN Ltd,FibroLAN CPE Management Protocol (FCMP)
+0x88D5,GGSN Design & Development Nortel Networks,Undisclosed protocol
+0x88D1,Integral Access Inc,Not currently published
+0x88C6,3eti,Protocol for 802.11 product to product communications
+0xFC3D,IEEE 1914 Next Generation Fronthaul Interface Working Group,Radio over Ethernet (RoE) encapsulation per IEEE Std 1914.3
+0xB081,Shenzhen Inovance Technology Co Ltd,WiTSnet real-time Ethernet communication protocol
+0x0842,IEEE 802.1 Chair,Wake-on-LAN (WoL) as described in IEEE Std. 802
+0xF45F,Beijing Haiwang Network Technologies Co Ltd,IDP (Identifier Protocol) as defined in ITU-T Y.3075
+0x8917,IEEE 802.21 Working Group,Media Independent Service (MIS) protocol as defined in IEEE Std 802.21
+0x0B04,University of Berkeley,Berkeley Reserved
+0x0B02,University of Berkeley,IEEE 802.3 compatible Sprite RPC
+0x0A00,Xerox,PARC Universal Packet (PUP)
+0xAAC5,Analog Devices Inc,Protocol still in development
+0x99FE,ASAM eV,CMP (Capture Module Protocol)
+0x88E5,IEEE 802.1 Working Group,Media Access Control (MAC) Security tag as defined in IEEE Std 802.1AE
+0x88B7,IEEE 802.1 Chair,OUI Extended EtherType as defined in IEEE Std 802
+0xA85A,Huawei Technologies Co Ltd,Protocol for device to device communication in Wireless LAN
+0xA8C8,IEEE 1904 Access Networks Working Group,Virtual Link Control (VLC) protocol for Ethernet-based subscriber access networks
+0xDC94,Kone Corporation,Protocol for elevator and escalator control and safety functions
+0x9433,O-RAN Alliance eV,Protocol specified by O-RAN Alliance
+0xB6FE,EtherCAT Technology Group,Protocol for routing functionality through branch controllers in EtherCAT G
+0x88A2,Coraid Inc,Advanced Technology Advancement (ATA) Protocol
+0x889A,Data Storage Institute,SCSI over Ethernet
+0x0806,Symbolics Inc,Address Resolution Protocol - A. R. P.
+0x88E1,HomePlug Powerline Alliance Inc,HomePlug Specification AV MME
+0xF4C4,iba AG,Protocol for acquiring recording analyzing and processing measurement data
+0x22E6,Nethra Imaging Incorporated,ExpEther protocol
+0x8901,Nokia Networks/IP Mobility Networks,Flow Layer Internal Protocol (FLIP) for inter-unit messaging
+0x8928,Brocade Communications Systems LLC,FSPF over Ethernet
+0x8905,Cisco Systems Inc,T-Tag (Timestamp Tag)
+0x8903,Cisco Systems Inc,DCE
+0x8813,silex technology Inc,FlashROM Loader Protocol (FLDP)
+0x88BA,IEC TC57,IEC 61850 SV (Sampled Value Transmission)
+0x886B,Bay Networks,Nortel Networks proprietary protocol
+0x894E,FSM Solutions Limited,Undisclosed protocols
+0x8881,TIA,Byte stream protocol for IP based micro-mobility bearer interfaces (A10) in cdma2000® based wireless networks
+0x893A,IEEE 1905.1,Media Independent Service (MIS) protocol for heterogeneous home networking technologies
+0x88C4,AutoCell Laboratories Inc,Protocol for automatic configuration of Wireless LANs
+0x8869,BigBand Networks,Proprietary chassis discovery protocols
+0x88D0,Nortel Wireless Mesh Networks,Nortel Proprietary Transit Link discovery protocol for WLAN mesh product
+0x8920,XStreamHD,Proprietary transport protocol for Full HD video and lossless audio distribution
+0x8919,Xsigo Systems,Xsigo Discovery Protocol (XDP) and Xsigo Session Management Protocol (XSMP)
+0x8086,Intel Americas Inc,8086 Proprietary Cluster Communication Protocol
+0x88FA,VARAN-BUS-NUTZERORGANISATION,VARAN (Versatile Automation Random Access Network) protocol
+0x88F8,DMTF,NC-SI (Network Controller - Sideband Interface) control command and response protocol
+0x88EC,Talari Networks Inc,Talari Encapsulation Protocol
+0x88EE,Metro Ethernet Forum,Ethernet Local Management Interface (E-LMI)
+0x88E9,Motorola,Undisclosed protocol
+0x88E8,LVL7 Systems,LVL7 Systems Proprietary Protocol
+0x88DE,Akimbi Systems Inc,Undisclosed protocols
+0x88D7,Vienna University of Technology,TT Ethernet protocol
+0x8902,IEEE 802.1 Chair,Connectivity Fault Management (CFM) Protocol Data Unit (PDU) Encapsulation as defined in IEEE 802.1Q
+0xBC17,Dish Technologies Corp,Protocol for automatic configuration of STBs on LANs
+0x0B06,University of Berkeley,Berkeley Reserved
+0x0A01,Xerox PUP,Address translation
+0xCCE0,Video Services Forum Inc.,Reliable Internet Stream Transport
+0x89A2,IEEE 802.1 Chair,Congestion Isolation Message (CIM)
+0xC9D1,IEEE 802.1 Chair,Legacy assignment (use 8870 instead) - LLC encapsulation
+0x893F,IEEE 802.1 Chair,Bridge Port Extension tag (E-TAG)
+0x22E2,IEEE 802.1 Chair,MAC Status Protocol (MSP)
+0x88F6,IEEE 802.1 Chair,Multiple MAC Registration Protocol (MMRP)
+0x8100,IEEE 802.1 Chair,Customer VLAN Tag (C-TAG)
+0xEADD,Huawei Technologies Co. Ltd.,New type of network protocol supporting multi-labels communication pattern
+0x891B,InfoSpark Technology Institute,TAEPOL (TAEP over LANs)
+0x891D,TTTech Computertechnik AG,TTEthernet Protocol Control Frame (TTE)
+0x809B,Private,Appletalk (Ethertalk)
+0xAD3F,Tibit Communications,PON OLT coordination protocol
+0xF68E,YASKAWA ELECTRIC CORPORATION,Fieldbus protocol for motion control systems
+0xB298,Kinova Robotics,Kinova Discovery protocol
+0xAB37,IETF Routing Area,BIER MPLS encapsulation
+0xB62C,OPC Foundation,OPC UA over Time Sensitive Networking (TSN)
+0x88CF,Panasonic Mobile Communications Co. Ltd.,WBS management and control protocol
+0xEC19,AirTies Wireless Networks,Proprietary protocol
+0xD672,InMon Corp.,sFlow
+0x8895,General Dynamics Mission Systems,AirFortress Security solution
+0x9E65,ETSI,LTE-WLAN Aggregation Adaptation Protocol (LWAAP)
+0x8951,Nokia Solutions and Networks GmbH & Co. KG,BTS internal protocol for inter-unit messaging
+0x8926,Cisco Systems Inc.,VNTAG - Virtual Network endpoint TAG
+0x8847,Cisco Systems,MPLS label stack - unicast
+0x8848,Cisco Systems,MPLS label stack - multicast
+0x894A,Endace Technologies Ltd.,Endace Ethernet
+0x88CA,Ericsson Research Canada Inc,TIPC (Transparent Inter Process Communication)
+0x9C40,Pilz GmbH & Co. KG,SafetyNET p
+0x8944,Carallon Ltd,High bandwidth low latency video over Ethernet protocol
+0x893D,Korea Electric Power Corporation,PLC network protocol
+0x893B,IETF TRILL Working Group,TRILL protocol extension
+0x8935,V.D.S. Video Display Systems srl,Proprietary protocol
+0x8933,Infinera Inc.,Infinera proprietary optical transport
+0x88CB,Zhejiang University,EPA (Ethernet for Plant Automation) protocol
+0x892D,Bachmann electronic GmbH,Industrial control protocol
+0x88F4,Woodhead Software & electronics,Real-time communication for industrial control equipment
+0x22DF,Toshiba Corporation,Token passing control on CSMA/CD
+0x891F,British Telecommunications Plc.,ITU-T Recommendation G.7041 Generic Framing Procedure (GFP)
+0x890F,MITSUBISHI ELECTRIC CORPORATION NAGOYA WORKS,Industrial network protocol
+0x890B,Panduit Corp,Panduit Proprietary Protocol
+0x88FD,Beceem Communications Inc.,IP packet encapsulation protocol
+0x88F9,Alcatel-Lucent Italia,Alcatel Proprietary Protocol
+0x88EF,NVIDIA Corporation,NVIDIA System Management Control Protocol
+0x88D4,Contemporary Control Systems Inc.,RapidRing protocol
+0x88C9,Xeline Co. Ltd.,Ethernet Protocol
+0x96B6,Huawei Technologies Co. Ltd.,Industrial optical fieldbus protocol
