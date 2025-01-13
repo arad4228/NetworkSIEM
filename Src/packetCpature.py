@@ -1,5 +1,6 @@
 from pcap_MAC import *
 from pcap_ARP import *
+from pcap_IP import *
 import libpcap as pcap
 import ctypes as ct
 import sys
@@ -15,25 +16,43 @@ def packet_controller(header, pkt_data):
     ## 헤더는 14 byte
     DataMACHeader = bytes(pkt_data[:14])
 
-    classHeader = CMACHeader()
-    classHeader.Split_MACHeader(DataMACHeader)
+    classMACHeader = CMACHeader()
+    classMACHeader.Split_MACHeader(DataMACHeader)
     
-    if 'A. R. P.' in classHeader.getTargetProtocol():
+    if 'A. R. P.' in classMACHeader.getTargetProtocol():
         ARPdata = bytes(pkt_data[14:42])
-        Source = classHeader.getSourceMAC()
-        Destination = classHeader.getDestinationMAC()
-        protocol = classHeader.getTargetProtocol()
+        Source = classMACHeader.getSourceMAC()
+        Destination = classMACHeader.getDestinationMAC()
+        protocol = classMACHeader.getTargetProtocol()
 
         classARP = CARP(Source, Destination, protocol)
         classARP.Split_ARPData(ARPdata)
-        classARP.PrintARPData()
+    elif "IP" in classMACHeader.getTargetProtocol():
+        VIHL = pkt_data[14]      # Version, IHL
+        Version = VIHL >> 4
+        IHL = VIHL & 0x0F  
+        if Version == 4:
+            IPHeader = bytes(pkt_data[14: 14+(IHL*4)])
+            classIPHeader = CIPV4Header()
+            classIPHeader.Split_IPV4Header(IPHeader)
+        else:
+            IPHeader = bytes(pkt_data[14:54])        #  Fixed 40 bytes
+            classIPHeader = CIPV6Header()
+            classIPHeader.Split_IPV6Header(IPHeader)
+        classIPHeader.PrintTCPData()
 
-def getPacketData(device):
+
+def getPacketData(device, workType, file):
     # 오류 메시지를 담을 버퍼 생성
     global handler
     errbuf = ct.create_string_buffer(pcap.PCAP_ERRBUF_SIZE)
     device = ct.c_char_p(device.encode("UTF-8"))
-    handler = pcap.open_live(device, 65535, 1, 1, errbuf)
+    
+    if workType == "Test":
+        file = ct.c_char_p(file.encode("UTF-8"))
+        handler = pcap.open_offline(file, errbuf)
+    else:
+        handler = pcap.open_live(device, 65535, 1, 1, errbuf)
 
     # 패킷이 구성되지 않았다면
     if not handler:
@@ -54,14 +73,17 @@ def getPacketData(device):
         elif result == 0: # time out
             continue
         else:
-            print("Error reading the packet {}", errbuf, file=sys.stderr)            
+            print("Error reading the packet {}".format(errbuf), file=sys.stderr)
+            exit(-1)           
 
 
 
 if __name__ == "__main__":
-    device = "en0"
+    device = "en7"
+    typeWork = "Nomal"   # Test / Nomal
+    file = "./TestFile/TestIPv6.pcap"
     try:
-        getPacketData(device)
+        getPacketData(device, typeWork, file)
     except KeyboardInterrupt:
         print("\nPacket capture stopped by user.")
     finally:
