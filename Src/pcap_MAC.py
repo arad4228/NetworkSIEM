@@ -1,29 +1,45 @@
-import libpcap as pcap
-import ctypes as ct
+import config
 import csv
 
-global listTypeMac
-listTypeMac = list()
+class CMACHeader:
+    def __init__(self, Source="", Destination="", Protocol=""):
+        self.SourceMAC = Source
+        self.DestinationMAC = Destination
+        self.TargetProtocol = Protocol
 
-## 14 byte의 MAC 헤더를 분리하고, 해당 프로토콜을 찾는 것이 목적.
-def Split_MACHeader(data):
-    # check if load MAC Type
-    global listTypeMac
-    if len(listTypeMac) == 0:
-        __readMACTypeCSV()
-    Destination_MAC = 'BROADCAST' if bytes(data[:6]).hex().lower() == 'ffffffffffff' else bytes(data[:6]).hex()
-    Source_MAC = bytes(data[6:12])
-    Type_MAC = bytes(data[12:14])
+    ## 14 byte의 MAC 헤더를 분리하고, 해당 프로토콜을 찾는 것이 목적.
+    def Split_MACHeader(self, data):
+        # check if load MAC Type
+        if len(config.listProtocolMAC) == 0:
+            self.__readMACTypeCSV()
+        DestinationMAC = 'BROADCAST' if bytes(data[:6]).hex().lower() == 'ffffffffffff' else bytes(data[:6])
+        SourceMAC = bytes(data[6:12])
+        TypeMAC = bytes(data[12:14])
 
-    # 성능 관점에서 나중에 binary Search로 변경
-    TargetMac = next((row['Protocol'] for row in listTypeMac if Type_MAC.hex().upper() in row['EtherType']), Type_MAC.hex().upper())
+        # 성능 관점에서 나중에 binary Search로 변경
+        TargetProtocol = next((row['Protocol'] for row in config.listProtocolMAC if TypeMAC.hex().upper() in row['EtherType']), TypeMAC.hex().upper())
+        
+        # MAC 주소 변경
+        if type(DestinationMAC) == bytes:
+            DestinationMAC = self.__converBytetoMACAddress(DestinationMAC)
+        SourceMAC = self.__converBytetoMACAddress(SourceMAC)
+
+        self.DestinationMAC = DestinationMAC
+        self.SourceMAC = SourceMAC
+        self.TargetProtocol = TargetProtocol
+
+    def getTargetProtocol(self):
+        return self.TargetProtocol
     
-    print("Destination MAC\t\t\tSource MAC\t\t\tMAC TYPE")
-    print(f"{Destination_MAC}\t\t\t{Source_MAC.hex()}\t\t\t{TargetMac}")
-    return TargetMac
+    def getSourceMAC(self):
+        return self.SourceMAC
+    
+    def getDestinationMAC(self):
+        return self.DestinationMAC
+        
+    def __converBytetoMACAddress(self, macAddress):
+        return ':'.join(['%02x' % b for b in macAddress])
 
-
-def __readMACTypeCSV():
-    global listTypeMac
-    with open("./MAC_Protocol.csv", 'r') as f:
-        listTypeMac = list(csv.DictReader(f))
+    def __readMACTypeCSV(self):
+        with open("./Resource/MAC_Protocol.csv", 'r') as f:
+            config.listProtocolMAC = list(csv.DictReader(f))

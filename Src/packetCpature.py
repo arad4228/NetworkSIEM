@@ -3,7 +3,6 @@ from pcap_ARP import *
 import libpcap as pcap
 import ctypes as ct
 import sys
-import signal
 
 # pcap Setting
 # for Mac OS
@@ -13,13 +12,21 @@ global handler
 handler = None
 
 def packet_controller(header, pkt_data):
-    ## 데이터 14바이트 이더넷(MAC)
-    data = bytes(pkt_data[:14])
-    type = Split_MACHeader(data)
-    ## 이후 데이터 TCP
-    if 'A. R. P.' in type:
-        data = bytes(pkt_data[14:42])
-        Split_ARPData(data) # 28byte
+    ## 헤더는 14 byte
+    DataMACHeader = bytes(pkt_data[:14])
+
+    classHeader = CMACHeader()
+    classHeader.Split_MACHeader(DataMACHeader)
+    
+    if 'A. R. P.' in classHeader.getTargetProtocol():
+        ARPdata = bytes(pkt_data[14:42])
+        Source = classHeader.getSourceMAC()
+        Destination = classHeader.getDestinationMAC()
+        protocol = classHeader.getTargetProtocol()
+
+        classARP = CARP(Source, Destination, protocol)
+        classARP.Split_ARPData(ARPdata)
+        classARP.PrintARPData()
 
 def getPacketData(device):
     # 오류 메시지를 담을 버퍼 생성
