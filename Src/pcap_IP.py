@@ -8,7 +8,7 @@ class CIPV4Header:
     def __init__(self):
         self.IsFragment = False
     
-    def Split_IPV4Header(self, data): # Ethernet 뒤에 부터 마지막까지만 있음.
+    def split_IPV4Header(self, data): # Ethernet 뒤에 부터 마지막까지만 있음.
         self.IPData = OrderedDict()
         VersionIHL = data[0]
         self.IPData['Version'] = VersionIHL >> 4
@@ -31,17 +31,18 @@ class CIPV4Header:
             OptionLen = self.IPData['IHL'] * 4
             self.IPData['Options'] = data[20:OptionLen].hex()
 
-    def PrintTCPData(self):
+    def printTCPData(self):
         jsonData = json.dumps(self.IPData, sort_keys=False, indent=4)
         print(jsonData)
 
-
+    def getNextProtocol(self):
+        return self.IPData['Protocol']
 
 class CIPV6Header():
     def __init__(self):
         self.IsFragment = False
     
-    def Split_IPV6Header(self, data):
+    def split_IPV6Header(self, data):
         if len(config.listIPV6NextHeader) == 0:
             self.__readIPV6NextHeaderCSV()
         self.IPData = OrderedDict()
@@ -55,9 +56,12 @@ class CIPV6Header():
         self.IPData['Source Address'] = socket.inet_ntop(socket.AF_INET6, data[8:24])
         self.IPData['Destination Address'] = socket.inet_ntop(socket.AF_INET6, data[24:40])
     
-    def PrintTCPData(self):
+    def printTCPData(self):
         jsonData = json.dumps(self.IPData, sort_keys=False, indent=4)
         print(jsonData)
+    
+    def getNextProtocol(self):
+        return self.IPData['Next Header']
 
     def __readIPV6NextHeaderCSV(self):
         with open("./Resource/IPv6NextHeader.csv", 'r') as f:

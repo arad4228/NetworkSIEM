@@ -8,7 +8,7 @@ class CMACHeader:
         self.TargetProtocol = Protocol
 
     ## 14 byte의 MAC 헤더를 분리하고, 해당 프로토콜을 찾는 것이 목적.
-    def Split_MACHeader(self, data):
+    def split_MACHeader(self, data):
         # check if load MAC Type
         if len(config.listProtocolMAC) == 0:
             self.__readMACTypeCSV()

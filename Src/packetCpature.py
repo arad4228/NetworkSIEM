@@ -17,7 +17,7 @@ def packet_controller(header, pkt_data):
     DataMACHeader = bytes(pkt_data[:14])
 
     classMACHeader = CMACHeader()
-    classMACHeader.Split_MACHeader(DataMACHeader)
+    classMACHeader.split_MACHeader(DataMACHeader)
     
     if 'A. R. P.' in classMACHeader.getTargetProtocol():
         ARPdata = bytes(pkt_data[14:42])
@@ -26,7 +26,7 @@ def packet_controller(header, pkt_data):
         protocol = classMACHeader.getTargetProtocol()
 
         classARP = CARP(Source, Destination, protocol)
-        classARP.Split_ARPData(ARPdata)
+        classARP.split_ARPData(ARPdata)
     elif "IP" in classMACHeader.getTargetProtocol():
         VIHL = pkt_data[14]      # Version, IHL
         Version = VIHL >> 4
@@ -34,12 +34,12 @@ def packet_controller(header, pkt_data):
         if Version == 4:
             IPHeader = bytes(pkt_data[14: 14+(IHL*4)])
             classIPHeader = CIPV4Header()
-            classIPHeader.Split_IPV4Header(IPHeader)
+            classIPHeader.split_IPV4Header(IPHeader)
         else:
             IPHeader = bytes(pkt_data[14:54])        #  Fixed 40 bytes
             classIPHeader = CIPV6Header()
-            classIPHeader.Split_IPV6Header(IPHeader)
-        classIPHeader.PrintTCPData()
+            classIPHeader.split_IPV6Header(IPHeader)
+        classIPHeader.printTCPData()
 
 
 def getPacketData(device, workType, file):

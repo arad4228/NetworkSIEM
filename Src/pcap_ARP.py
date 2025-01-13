@@ -12,7 +12,7 @@ class CARP(CMACHeader):
         super().__init__(Source=SourceMAC, Destination=DesticationMAC, Protocol=Protocol)
         self.ARPData = OrderedDict()
 
-    def Split_ARPData(self, data):
+    def split_ARPData(self, data):
         if len(config.listMACHardwareType) == 0:
             self.__readARPDataCSV()
 
@@ -38,7 +38,7 @@ class CARP(CMACHeader):
         self.ARPData['Target MAC'] = self._CMACHeader__converBytetoMACAddress(TargetMACAddress)
         self.ARPData['Target IP'] = socket.inet_ntoa(TargetIPAddress)
 
-    def PrintARPData(self):
+    def printARPData(self):
         jsonData = json.dumps(self.IPData, sort_keys=False, indent=4)
         print(jsonData)
 
