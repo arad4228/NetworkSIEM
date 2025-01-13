@@ -65,7 +65,6 @@ EtherType,Organization,Protocol
 0x8908,Waves Audio LTD,Proprietary protocol with Workgroup ID Destination LUN Source LUN and Opcode fields
 0x88DC,IEEE P1609 WG (WAVE),Short Message Protocol (WSM)
 0x88AB,ETHERNET Powerlink Standarization Group (EPSG),ETHERNET Powerlink (EPL)
-0x86DD,USC/ISI,Internet Protocol Version 6 (IPV6)
 0x894F,Cisco Systems Inc,NSH (Network Service Header)
 0x8936,Ericsson AB,Protocol for exchange of radio data frames between network forwarding device and radio device
 0xED3E,IETF Routing Area,FoRCES inter-FE LFB type
