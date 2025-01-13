@@ -1,6 +1,5 @@
 from pcap_MAC import CMACHeader
 from collections import OrderedDict
-from pprint import pprint
 import config
 import json
 import socket
@@ -40,8 +39,8 @@ class CARP(CMACHeader):
         self.ARPData['Target IP'] = socket.inet_ntoa(TargetIPAddress)
 
     def PrintARPData(self):
-        jsonData = json.loads(json.dumps(self.ARPData))
-        pprint(jsonData)
+        jsonData = json.dumps(self.IPData, sort_keys=False, indent=4)
+        print(jsonData)
 
     def __readARPDataCSV(self):
         with open("./Resource/ARPHardware.csv", 'r') as f:
