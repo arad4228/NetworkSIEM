@@ -8,6 +8,7 @@ import csv
 # interface
 class CInternet(ABC):
     def __init__(self):
+        super().__init__()
         self.IsFragment = False
     
     @abstractmethod
