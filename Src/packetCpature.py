@@ -1,5 +1,6 @@
 from pcap_Network import *
 from pcap_Internet import *
+from pcap_Transport import *
 import libpcap as pcap
 import ctypes as ct
 import sys
@@ -12,34 +13,57 @@ global handler
 handler = None
 
 def packet_controller(header, pkt_data):
-
-    # Internet(MAC Protocol)
-    DataMACHeader = bytes(pkt_data[:14])
+    # Internet(MAC Protocol) # 14 bytes
+    start = 0
+    end = config.nMACProtocolLen
+    DataMACHeader = bytes(pkt_data[:end])
     classMACHeader = CMAC()
     classMACHeader.serializeData(DataMACHeader)
 
     # Internet(ARP, RARP, IPv4, IPv6)
+    # Switch문으로 변경하고 인터페이스에 호출하도록 선언
     if 'ARP' in classMACHeader.getTargetProtocol():
-        ARPdata = bytes(pkt_data[14:42])
-        # 만약 RAPR라면
+        start = end
+        end += config.nARPProtocolLen
+        ARPdata = bytes(pkt_data[start:end])
         if "RARP" in classMACHeader.getTargetProtocol():
             classARP = CRARP()
         else:
             classARP = CARP()
         classARP.serializeData(ARPdata)
-        classARP.printData()
+        # classARP.printData()
+
     elif "IP" in classMACHeader.getTargetProtocol():
-        VIHL = pkt_data[14]      # Version, IHL
+        start = end
+        VIHL = pkt_data[start]      # Version, IHL
         Version = VIHL >> 4
         if Version == 4:
-            IHL = VIHL & 0x0F  
-            IPHeader = bytes(pkt_data[14: 14+(IHL*4)])
+            IHL = VIHL & 0x0F
+            end += IHL * 4
+            IPHeader = bytes(pkt_data[start: end])
             classIPHeader = CIPV4Header()
-        else:
-            IPHeader = bytes(pkt_data[14:54])        #  Fixed 40 bytes
+        elif Version == 6:
+            end += config.nIPv6ProtocolLen
+            IPHeader = bytes(pkt_data[start:end])        #  Fixed 40 bytes
             classIPHeader = CIPV6Header()
+        else:
+            raise Exception("올바르지 않은 IP Version입니다.")
         classIPHeader.serializeData(IPHeader)
         # classIPHeader.printData()
+
+        # TCP 먼저
+        if 'Transmission Control' in classIPHeader.getNextProtocol():
+            start = end
+            DataOffsetReserved = pkt_data[start + 12]
+            DataOffset = ((DataOffsetReserved & 0xF0) >> 4) * 4
+            end += DataOffset
+            TCPHeader = bytes(pkt_data[start:end])
+            classTransportHeader = CTCP()
+            classTransportHeader.serializeData(TCPHeader)
+            # classTransportHeader.printData()
+            if header.contents.len == end:
+                print("End of TCP")
+            print(f"Next Protocol is {classTransportHeader.getNextProtocol(classTransportHeader.getReceiverPort())}")
 
 
 def getPacketData(device, workType, file):
@@ -80,7 +104,7 @@ def getPacketData(device, workType, file):
 
 if __name__ == "__main__":
     device = "en7"
-    typeWork = "Test"   # Test / Nomal
+    typeWork = "Nomal"   # Test / Nomal
     file = "./TestFile/TestRARP.pcap"
     try:
         getPacketData(device, typeWork, file)
