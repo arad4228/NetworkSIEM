@@ -1,6 +1,5 @@
-from pcap_MAC import *
-from pcap_ARP import *
-from pcap_IP import *
+from pcap_Network import *
+from pcap_Internet import *
 import libpcap as pcap
 import ctypes as ct
 import sys
@@ -13,33 +12,34 @@ global handler
 handler = None
 
 def packet_controller(header, pkt_data):
-    ## 헤더는 14 byte
+
+    # Internet(MAC Protocol)
     DataMACHeader = bytes(pkt_data[:14])
+    classMACHeader = CMAC()
+    classMACHeader.serializeData(DataMACHeader)
 
-    classMACHeader = CMACHeader()
-    classMACHeader.split_MACHeader(DataMACHeader)
-    
-    if 'A. R. P.' in classMACHeader.getTargetProtocol():
+    # Internet(ARP, RARP, IPv4, IPv6)
+    if 'ARP' in classMACHeader.getTargetProtocol():
         ARPdata = bytes(pkt_data[14:42])
-        Source = classMACHeader.getSourceMAC()
-        Destination = classMACHeader.getDestinationMAC()
-        protocol = classMACHeader.getTargetProtocol()
-
-        classARP = CARP(Source, Destination, protocol)
-        classARP.split_ARPData(ARPdata)
+        # 만약 RAPR라면
+        if "RARP" in classMACHeader.getTargetProtocol():
+            classARP = CRARP()
+        else:
+            classARP = CARP()
+        classARP.serializeData(ARPdata)
+        classARP.printData()
     elif "IP" in classMACHeader.getTargetProtocol():
         VIHL = pkt_data[14]      # Version, IHL
         Version = VIHL >> 4
-        IHL = VIHL & 0x0F  
         if Version == 4:
+            IHL = VIHL & 0x0F  
             IPHeader = bytes(pkt_data[14: 14+(IHL*4)])
             classIPHeader = CIPV4Header()
-            classIPHeader.split_IPV4Header(IPHeader)
         else:
             IPHeader = bytes(pkt_data[14:54])        #  Fixed 40 bytes
             classIPHeader = CIPV6Header()
-            classIPHeader.split_IPV6Header(IPHeader)
-        classIPHeader.printTCPData()
+        classIPHeader.serializeData(IPHeader)
+        # classIPHeader.printData()
 
 
 def getPacketData(device, workType, file):
@@ -80,8 +80,8 @@ def getPacketData(device, workType, file):
 
 if __name__ == "__main__":
     device = "en7"
-    typeWork = "Nomal"   # Test / Nomal
-    file = "./TestFile/TestIPv6.pcap"
+    typeWork = "Test"   # Test / Nomal
+    file = "./TestFile/TestRARP.pcap"
     try:
         getPacketData(device, typeWork, file)
     except KeyboardInterrupt:

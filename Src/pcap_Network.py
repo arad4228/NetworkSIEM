@@ -1,14 +1,14 @@
+from collections import OrderedDict
 import config
 import csv
+import json
 
-class CMACHeader:
-    def __init__(self, Source="", Destination="", Protocol=""):
-        self.SourceMAC = Source
-        self.DestinationMAC = Destination
-        self.TargetProtocol = Protocol
+class CMAC:
+    def __init__(self):
+        self.MACHeader = OrderedDict()
 
     ## 14 byte의 MAC 헤더를 분리하고, 해당 프로토콜을 찾는 것이 목적.
-    def split_MACHeader(self, data):
+    def serializeData(self, data):
         # check if load MAC Type
         if len(config.listProtocolMAC) == 0:
             self.__readMACTypeCSV()
@@ -24,18 +24,22 @@ class CMACHeader:
             DestinationMAC = self.__converBytetoMACAddress(DestinationMAC)
         SourceMAC = self.__converBytetoMACAddress(SourceMAC)
 
-        self.DestinationMAC = DestinationMAC
-        self.SourceMAC = SourceMAC
-        self.TargetProtocol = TargetProtocol
+        self.MACHeader['Destination MAC'] = DestinationMAC
+        self.MACHeader['Source MAC'] = SourceMAC
+        self.MACHeader['Target Protocol'] = TargetProtocol
 
-    def getTargetProtocol(self):
-        return self.TargetProtocol
+    def printData(self):
+        jsonData = json.dumps(self.MACHeader, sort_keys=False, indent=4)
+        print(jsonData)
+
+    def getDestinationMAC(self):
+        return self.MACHeader['Destination MAC']
     
     def getSourceMAC(self):
-        return self.SourceMAC
+        return self.MACHeader['Source MAC']
     
-    def getDestinationMAC(self):
-        return self.DestinationMAC
+    def getTargetProtocol(self):
+        return self.MACHeader['Target Protocol']
         
     def __converBytetoMACAddress(self, macAddress):
         return ':'.join(['%02x' % b for b in macAddress])
