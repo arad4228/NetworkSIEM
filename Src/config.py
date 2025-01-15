@@ -2,16 +2,17 @@
 listProtocolMAC = list()
 listMACHardwareType = list()
 listMacOperationCode = list()
-listIPV4Protocol = {1: "Internet Control Message Protocol(ICMP)", 
-                    2: "Internet Group Management Protocol(IGMP)",
-                    6: "Transmission Control Protocol(TCP)",
-                    17: "User Datagram Protocol(UDP)",
-                    41: "IPv6 encapsulation(ENCAP)",
-                    89: "Open Shortest Path First(OSPF)",
-                    132: "Stream Control Transmission Protocol(SCTP)"
+listIPV4Protocol = {1: "Internet Control Message Protocol", 
+                    2: "Internet Group Management Protocol",
+                    6: "Transmission Control Protocol",
+                    17: "User Datagram Protocol",
+                    41: "IPv6 encapsulation",
+                    89: "Open Shortest Path First",
+                    132: "Stream Control Transmission Protocol"
                 }
 listIPV6NextHeader = list()
 listWellKnownPort = list()
+listICMPProtocol = list()
 
 
 ## 각종 프로토콜 패킷 고정 길이 데이터
