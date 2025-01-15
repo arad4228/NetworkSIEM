@@ -1,5 +1,6 @@
 from pcap_Network import *
 from pcap_Internet import *
+from pcap_InternetOver import *
 from pcap_Transport import *
 import libpcap as pcap
 import ctypes as ct
@@ -18,7 +19,7 @@ def packet_controller(header, pkt_data):
     end = config.nMACProtocolLen
     DataMACHeader = bytes(pkt_data[:end])
     classMACHeader = CMAC()
-    classMACHeader.serializeData(DataMACHeader)
+    classMACHeader.deserializeData(DataMACHeader)
 
     # Internet(ARP, RARP, IPv4, IPv6)
     # Switch문으로 변경하고 인터페이스에 호출하도록 선언
@@ -30,7 +31,7 @@ def packet_controller(header, pkt_data):
             classARP = CRARP()
         else:
             classARP = CARP()
-        classARP.serializeData(ARPdata)
+        classARP.deserializeData(ARPdata)
         # classARP.printData()
 
     elif "IP" in classMACHeader.getTargetProtocol():
@@ -48,23 +49,31 @@ def packet_controller(header, pkt_data):
             classIPHeader = CIPV6Header()
         else:
             raise Exception("올바르지 않은 IP Version입니다.")
-        classIPHeader.serializeData(IPHeader)
+        classIPHeader.deserializeData(IPHeader)
         # classIPHeader.printData()
 
-        # TCP 먼저
-        if 'Transmission Control' in classIPHeader.getNextProtocol():
-            start = end
-            DataOffsetReserved = pkt_data[start + 12]
-            DataOffset = ((DataOffsetReserved & 0xF0) >> 4) * 4
-            end += DataOffset
-            TCPHeader = bytes(pkt_data[start:end])
-            classTransportHeader = CTCP()
-            classTransportHeader.serializeData(TCPHeader)
-            # classTransportHeader.printData()
-            if header.contents.len == end:
-                print("End of TCP")
-            print(f"Next Protocol is {classTransportHeader.getNextProtocol(classTransportHeader.getReceiverPort())}")
+        match(classIPHeader.getNextProtocol()):
+            case 'Transmission Control Protocol':
+                start = end
+                DataOffsetReserved = pkt_data[start + 12]
+                DataOffset = ((DataOffsetReserved & 0xF0) >> 4) * 4
+                end += DataOffset
+                TCPHeader = bytes(pkt_data[start:end])
+                classTransportHeader = CTCP()
+                classTransportHeader.deserializeData(TCPHeader)
+                # classTransportHeader.printData()
+                if header.contents.len == end:
+                    print("End of TCP")
+                print(f"Next Protocol is {classTransportHeader.getNextProtocol(start, header.contents.len)}")
+            case 'User Datagram Protocol':
+                pass
 
+            case 'Internet Control Message Protocol':
+                start = end
+                end = header.contents.len
+                ICMPData = bytes(pkt_data[start:end])
+                classICMP = CICMP()
+                classICMP.deserializeData(ICMPData)
 
 def getPacketData(device, workType, file):
     # 오류 메시지를 담을 버퍼 생성
@@ -100,12 +109,10 @@ def getPacketData(device, workType, file):
             print("Error reading the packet {}".format(errbuf), file=sys.stderr)
             exit(-1)           
 
-
-
 if __name__ == "__main__":
     device = "en7"
-    typeWork = "Nomal"   # Test / Nomal
-    file = "./TestFile/TestRARP.pcap"
+    typeWork = "Test"   # Test / Nomal
+    file = "./TestFile/TestICMP.pcap"
     try:
         getPacketData(device, typeWork, file)
     except KeyboardInterrupt:
