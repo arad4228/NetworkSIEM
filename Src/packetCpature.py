@@ -74,6 +74,7 @@ def packet_controller(header, pkt_data):
                 ICMPData = bytes(pkt_data[start:end])
                 classICMP = CICMP()
                 classICMP.deserializeData(ICMPData)
+                classICMP.printData()
 
 def getPacketData(device, workType, file):
     # 오류 메시지를 담을 버퍼 생성
