@@ -8,7 +8,7 @@ class CMAC:
         self.MACHeader = OrderedDict()
 
     ## 14 byte의 MAC 헤더를 분리하고, 해당 프로토콜을 찾는 것이 목적.
-    def serializeData(self, data):
+    def deserializeData(self, data):
         # check if load MAC Type
         if len(config.listProtocolMAC) == 0:
             self.__readMACTypeCSV()

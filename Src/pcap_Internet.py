@@ -12,22 +12,25 @@ class CInternet(ABC):
         self.IsFragment = False
     
     @abstractmethod
-    def serializeData(self, data):
+    def deserializeData(self, data):
         pass
 
     @abstractmethod
     def printData(self):
         pass
 
+    @abstractmethod
+    def getNextProtocol(self):
+        pass
+
 class CARP(CInternet):
     def __init__(self):
         super().__init__()
         self.ARPData = OrderedDict()
-
-    def serializeData(self, data):
         if len(config.listMACHardwareType) == 0:
             self.__readARPDataCSV()
 
+    def deserializeData(self, data):
         HardwareType = bytes(data[0:2])  # 2byte
         ProtocolType = bytes(data[2:4])  # 2byte
 
@@ -54,6 +57,9 @@ class CARP(CInternet):
         jsonData = json.dumps(self.ARPData, sort_keys=False, indent=4)
         print(jsonData)
 
+    def getNextProtocol(self):
+        return "None"
+
     def __readARPDataCSV(self):
         with open("./Resource/ARPHardware.csv", 'r') as f:
             config.listMACHardwareType = list(csv.DictReader(f))
@@ -67,11 +73,10 @@ class CRARP(CInternet):
     def __init__(self):
         super().__init__()
         self.RARPData = OrderedDict()
-    
-    def serializeData(self, data):
         if len(config.listMACHardwareType) == 0:
             self.__readRARPDataCSV()
 
+    def deserializeData(self, data):
         HardwareType = bytes(data[0:2])  # 2byte
         ProtocolType = bytes(data[2:4])  # 2byte
 
@@ -97,6 +102,9 @@ class CRARP(CInternet):
     def printData(self):
         jsonData = json.dumps(self.RARPData, sort_keys=False, indent=4)
         print(jsonData)
+    
+    def getNextProtocol(self):
+        return "None"
 
     def __readRARPDataCSV(self):
         with open("./Resource/ARPHardware.csv", 'r') as f:
@@ -112,7 +120,7 @@ class CIPV4Header(CInternet):
         super().__init__()
         self.IPData = OrderedDict()
 
-    def serializeData(self, data): # Ethernet 뒤에 부터 마지막까지만 있음.
+    def deserializeData(self, data): # Ethernet 뒤에 부터 마지막까지만 있음.
         VersionIHL = data[0]
         self.IPData['Version'] = VersionIHL >> 4
         self.IPData['IHL'] = VersionIHL & 0x0F   # Internet Header Len
@@ -145,10 +153,10 @@ class CIPV6Header(CInternet):
     def __init__(self):
         super().__init__()
         self.IPData = OrderedDict()
-
-    def serializeData(self, data):
         if len(config.listIPV6NextHeader) == 0:
             self.__readIPV6NextHeaderCSV()
+
+    def deserializeData(self, data):
         VTF = data[0:4]     # Version, Traaffic class, Flow label
         self.IPData['Version'] = (int.from_bytes(VTF) & 0xF0000000) >> 28
         self.IPData['TrafficClass'] = (int.from_bytes(VTF) & 0x0FF00000) >> 20

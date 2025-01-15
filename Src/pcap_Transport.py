@@ -10,7 +10,7 @@ class CTransport(ABC):
         self.TransportType = TransType
 
     @abstractmethod
-    def serializeData(self, data):
+    def deserializeData(self, data):
         pass
 
     @abstractmethod
@@ -19,6 +19,10 @@ class CTransport(ABC):
 
     @abstractmethod
     def getNextProtocol(self):
+        pass
+
+    @abstractmethod
+    def getDataLocation(self, Start):
         pass
 
     def getProtocolType(self):
@@ -31,7 +35,7 @@ class CTCP(CTransport):
         if len(config.listWellKnownPort) == 0:
             self.__readWellKnownPortCSV()
 
-    def serializeData(self, data):
+    def deserializeData(self, data):
         self.TCPHeader['Source Port'] = int.from_bytes(data[0:2])
         self.TCPHeader['Destination Port'] = int.from_bytes(data[2:4])
         self.TCPHeader['Sequence Number'] = int.from_bytes(data[4:8])
@@ -49,24 +53,23 @@ class CTCP(CTransport):
 
         if DataOffset > 5: # Options 필드가 있다면, 그냥 묶어서 hex화.
             self.TCPHeader['Options'] = data[20: 20 + DataOffset*4].hex()
-        
-        self.TCPDataLoc = 20 + DataOffset*4
 
-    def getLastTCPHeaderLocation(self):
-        return self.TCPDataLoc
+    def getDataLocation(self, Start):
+        return Start + self.TCPHeader['Data Offset'] * 4
     
     def printData(self):
         jsonData = json.dumps(self.TCPHeader, sort_keys=False, indent=4)
         print(jsonData)
 
-    def getNextProtocol(self, port):
+    def getNextProtocol(self, TCPStart, TotalSize):
+        Port = self.TCPHeader['Destination Port']
+        if self.getDataLocation(TCPStart) == TotalSize:
+            return "TCP"
+        
         # if Destination Port is Well Known Prots
         ProtocolType = self.getProtocolType()
-        NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(port) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "TCP")
+        NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(Port) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "TCP")
         return NextProtocol
-    
-    def getReceiverPort(self):
-        return self.TCPHeader['Destination Port']
 
     def __readWellKnownPortCSV(self):
         with open("./Resource/Well_Known_Ports.csv", 'r') as f:
@@ -76,3 +79,26 @@ class CUDP(CTransport):
     def __init__(self):
         super().__init__("udp")
         self.UDPHeader = OrderedDict()
+
+    def deserializeData(self, data):
+        self.UDPHeader['Source Port'] = int.from_bytes(data[0:2])
+        self.UDPHeader['Destination Port'] = int.from_bytes(data[2:4])
+        self.UDPHeader['Length'] = int.from_bytes(data[4:6])
+        self.UDPHeader['Checksum'] = int.from_bytes(data[6:8])
+
+    def printData(self):
+        jsonData = json.dumps(self.UDPHeader, sort_keys=False, indent=4)
+        print(jsonData)
+
+    def getDataLocation(self, Start):
+        return Start + self.UDPHeader['Length'] * 4
+
+    def getNextProtocol(self, UDPStart, TotalSize):
+        # if Destination Port is Well Known Prots
+        Port = self.UDPHeader['Destination Port']
+        if self.getTCPDataLocation(UDPStart) == TotalSize:
+            return "UDP"
+        
+        ProtocolType = self.getProtocolType()
+        NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(Port) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "UDP")
+        return NextProtocol
