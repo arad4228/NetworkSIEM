@@ -149,6 +149,9 @@ class CIPV4Header(CInternet):
     def getNextProtocol(self):
         return self.IPData['Protocol']
     
+    def getData(self):
+        return self.IPData
+    
 class CIPV6Header(CInternet):
     def __init__(self):
         super().__init__()
@@ -173,6 +176,9 @@ class CIPV6Header(CInternet):
     
     def getNextProtocol(self):
         return self.IPData['Next Header']
+    
+    def getData(self):
+        return self.IPData
 
     def __readIPV6NextHeaderCSV(self):
         with open("./Resource/IPv6NextHeader.csv", 'r') as f:
