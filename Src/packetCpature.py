@@ -22,59 +22,70 @@ def packet_controller(header, pkt_data):
     classMACHeader.deserializeData(DataMACHeader)
 
     # Internet(ARP, RARP, IPv4, IPv6)
-    # Switch문으로 변경하고 인터페이스에 호출하도록 선언
-    if 'ARP' in classMACHeader.getTargetProtocol():
-        start = end
+    start = end
+    VIHL = pkt_data[start]      # Version, IHL
+    Version = VIHL >> 4
+    # Cisco와 같은 안알려진 데이터 처리를 위한 예외 처리 도입 필요
+    try:
+        NextProtocol = CInternetFactory.getNextProtocol(classMACHeader.getTargetProtocol(), Version)
+        if NextProtocol == None:
+            raise Exception(f"등록되지않은 EtherType: {classMACHeader.getTargetProtocol()}")
+    except Exception as e:
+        print(e)
+        end = header.contents.len
+        data = {"data": (bytes(pkt_data[start:end]).hex())}
+        classMACHeader.addDataForUnknownType(data)
+        classMACHeader.printData()
+        return
+    Protocoldata = ""
+
+    # ARP, RPARP
+    if 'ARP' in NextProtocol.getProtocolName():
         end += config.nARPProtocolLen
-        ARPdata = bytes(pkt_data[start:end])
-        if "RARP" in classMACHeader.getTargetProtocol():
-            classARP = CRARP()
-        else:
-            classARP = CARP()
-        classARP.deserializeData(ARPdata)
-        # classARP.printData()
-
-    elif "IP" in classMACHeader.getTargetProtocol():
-        start = end
+        Protocoldata = bytes(pkt_data[start:end])
+    elif "IPv4" == NextProtocol.getProtocolName():
         VIHL = pkt_data[start]      # Version, IHL
-        Version = VIHL >> 4
-        if Version == 4:
-            IHL = VIHL & 0x0F
-            end += IHL * 4
-            IPHeader = bytes(pkt_data[start: end])
-            classIPHeader = CIPV4Header()
-        elif Version == 6:
-            end += config.nIPv6ProtocolLen
-            IPHeader = bytes(pkt_data[start:end])        #  Fixed 40 bytes
-            classIPHeader = CIPV6Header()
-        else:
-            raise Exception("올바르지 않은 IP Version입니다.")
-        classIPHeader.deserializeData(IPHeader)
-        # classIPHeader.printData()
+        IHL = VIHL & 0x0F
+        end += IHL * 4
+        Protocoldata = bytes(pkt_data[start: end])
+    elif  "IPv6" == NextProtocol.getProtocolName():
+        end += config.nIPv6ProtocolLen
+        Protocoldata = bytes(pkt_data[start:end])        #  Fixed 40 bytes
+    else:
+        raise Exception("올바르지 않은 IP Version입니다.")
+    NextProtocol.deserializeData(Protocoldata)  
+    # classIPHeader.printData()
 
-        match(classIPHeader.getNextProtocol()):
-            case 'Transmission Control Protocol':
-                start = end
-                DataOffsetReserved = pkt_data[start + 12]
-                DataOffset = ((DataOffsetReserved & 0xF0) >> 4) * 4
-                end += DataOffset
-                TCPHeader = bytes(pkt_data[start:end])
-                classTransportHeader = CTCP()
-                classTransportHeader.deserializeData(TCPHeader)
-                # classTransportHeader.printData()
-                if header.contents.len == end:
-                    print("End of TCP")
-                print(f"Next Protocol is {classTransportHeader.getNextProtocol(start, header.contents.len)}")
-            case 'User Datagram Protocol':
-                pass
-
-            case 'Internet Control Message Protocol':
-                start = end
-                end = header.contents.len
-                ICMPData = bytes(pkt_data[start:end])
-                classICMP = CICMP()
-                classICMP.deserializeData(ICMPData)
-                classICMP.printData()
+    match(NextProtocol.getNextProtocol()):
+        case 'Transmission Control Protocol':
+            start = end
+            DataOffsetReserved = pkt_data[start + 12]
+            DataOffset = ((DataOffsetReserved & 0xF0) >> 4) * 4
+            end += DataOffset
+            TCPData = bytes(pkt_data[start:end])
+            classTCP = CTCP()
+            classTCP.deserializeData(TCPData)
+            # classTCP.printData()
+            if header.contents.len == end:
+                print("End of TCP")
+            print(f"(TCP)Next Protocol is {classTCP.getNextProtocol(start, header.contents.len)}")
+        case 'User Datagram Protocol':
+            start = end
+            UDPLength = int.from_bytes(pkt_data[start + 4: start + 6])
+            end += UDPLength
+            UDPData = bytes(pkt_data[start:end])
+            classUDP = CUDP()
+            classUDP.deserializeData(UDPData)
+            if header.contents.len == end:
+                print("End of UDP")
+            print(f"(UDP)Next Protocol is {classUDP.getNextProtocol(start, header.contents.len)}")
+        case 'Internet Control Message Protocol':
+            start = end
+            end = header.contents.len
+            ICMPData = bytes(pkt_data[start:end])
+            classICMP = CICMP()
+            classICMP.deserializeData(ICMPData)
+            classICMP.printData()
 
 def getPacketData(device, workType, file):
     # 오류 메시지를 담을 버퍼 생성
@@ -112,8 +123,8 @@ def getPacketData(device, workType, file):
 
 if __name__ == "__main__":
     device = "en7"
-    typeWork = "Test"   # Test / Nomal
-    file = "./TestFile/TestICMP.pcap"
+    typeWork = "Nomal"   # Test / Nomal
+    file = "./TestFile/TestCisco.pcap"
     try:
         getPacketData(device, typeWork, file)
     except KeyboardInterrupt:

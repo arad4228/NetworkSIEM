@@ -8,7 +8,6 @@ import json
 import datetime
 
 class CICMP:
-    
     def __init__(self):
         self.ICMPData = OrderedDict()
         if len(config.listICMPProtocol) == 0:
@@ -37,7 +36,6 @@ class CICMP:
                 self.ICMPData['Gateway Address'] = socket.inet_ntoa(data[4:8])
             else:
                 self.ICMPData['Unused'] = data[4:8].hex()
-            # 중복 코드
             VIHL = data[8]      # Version, IHL
             Version = VIHL >> 4
             if Version != 4:
@@ -46,11 +44,10 @@ class CICMP:
             ClassIPv4 = CIPV4Header()
             ClassIPv4.deserializeData(data[8:8 + IHL])
             self.ICMPData.update(ClassIPv4.getData())
-            NextProtocol = ClassIPv4.getNextProtocol()
-            if NextProtocol == "User Datagram Protocol":
-                ClassUDP = CUDP()
-                ClassUDP.deserializeData(data[8 + IHL:])
-                self.ICMPData.update(ClassUDP.getData())
+            ## Factory Pattern으로 업데이트(완)
+            NextProtocol = CTransportFactory.getNextProtocol(ClassIPv4.getNextProtocol())
+            NextProtocol.deserializeData(data[8 + IHL:])
+            self.ICMPData.update(NextProtocol.getData())
 
     def printData(self):
         jsonData = json.dumps(self.ICMPData, sort_keys=False, indent=4)

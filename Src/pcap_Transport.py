@@ -27,6 +27,14 @@ class CTransport(ABC):
 
     def getProtocolType(self):
         return self.TransportType
+    
+class CTransportFactory:
+    @staticmethod
+    def getNextProtocol(Type):
+        if Type == "Transmission Control Protocol":
+            return CTCP()
+        elif Type == "User Datagram Protocol":
+            return CUDP()
 
 class CTCP(CTransport):
     def __init__(self):
@@ -103,7 +111,7 @@ class CUDP(CTransport):
     def getNextProtocol(self, UDPStart, TotalSize):
         # if Destination Port is Well Known Prots
         Port = self.UDPData['Destination Port']
-        if self.getTCPDataLocation(UDPStart) == TotalSize:
+        if self.getDataLocation(UDPStart) == TotalSize:
             return "UDP"
         
         ProtocolType = self.getProtocolType()

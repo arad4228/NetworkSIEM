@@ -7,9 +7,10 @@ import csv
 
 # interface
 class CInternet(ABC):
-    def __init__(self):
+    def __init__(self, Protocol):
         super().__init__()
         self.IsFragment = False
+        self.ProtocolName = Protocol
     
     @abstractmethod
     def deserializeData(self, data):
@@ -23,9 +24,25 @@ class CInternet(ABC):
     def getNextProtocol(self):
         pass
 
+    def getProtocolName(self):
+        return self.ProtocolName
+
+class CInternetFactory:        
+    @staticmethod
+    def getNextProtocol(Protocol, Version=""):
+        if "ARP" in Protocol:
+            return CARP()
+        elif "RARP" in Protocol:
+            return CRARP()
+        elif "IP" in Protocol:
+            if Version == 4:
+                return CIPV4()
+            elif Version == 6:
+                return CIPV6()
+
 class CARP(CInternet):
     def __init__(self):
-        super().__init__()
+        super().__init__("ARP")
         self.ARPData = OrderedDict()
         if len(config.listMACHardwareType) == 0:
             self.__readARPDataCSV()
@@ -71,7 +88,7 @@ class CARP(CInternet):
 
 class CRARP(CInternet):
     def __init__(self):
-        super().__init__()
+        super().__init__("RARP")
         self.RARPData = OrderedDict()
         if len(config.listMACHardwareType) == 0:
             self.__readRARPDataCSV()
@@ -115,9 +132,9 @@ class CRARP(CInternet):
     def __converBytetoMACAddress(self, macAddress):
         return ':'.join(['%02x' % b for b in macAddress])
 
-class CIPV4Header(CInternet):
+class CIPV4(CInternet):
     def __init__(self):
-        super().__init__()
+        super().__init__("IPv4")
         self.IPData = OrderedDict()
 
     def deserializeData(self, data): # Ethernet 뒤에 부터 마지막까지만 있음.
@@ -152,9 +169,9 @@ class CIPV4Header(CInternet):
     def getData(self):
         return self.IPData
     
-class CIPV6Header(CInternet):
+class CIPV6(CInternet):
     def __init__(self):
-        super().__init__()
+        super().__init__("IPv6")
         self.IPData = OrderedDict()
         if len(config.listIPV6NextHeader) == 0:
             self.__readIPV6NextHeaderCSV()
