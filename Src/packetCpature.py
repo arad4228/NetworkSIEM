@@ -123,8 +123,8 @@ def getPacketData(device, workType, file):
 
 if __name__ == "__main__":
     device = "en7"
-    typeWork = "Nomal"   # Test / Nomal
-    file = "./TestFile/TestCisco.pcap"
+    typeWork = "Test"   # Test / Nomal
+    file = "./TestFile/TestICMP.pcap"
     try:
         getPacketData(device, typeWork, file)
     except KeyboardInterrupt:

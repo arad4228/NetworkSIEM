@@ -1,4 +1,4 @@
-Type,Code, Code Description,Type Name,Reference
+Type,Code,Code Description,Type Name,Reference
 0,0,No Code,Echo Reply,[RFC792]
 1,0,No registrations at this time.,Unassigned,
 2,0,No registrations at this time.,Unassigned,
@@ -76,5 +76,4 @@ Type,Code, Code Description,Type Name,Reference
 43,4,Multiple Interfaces Satisfy Query,Extended Echo Reply,[RFC8335]
 253,0,No registrations at this time.,RFC3692-style Experiment 1,[RFC4727]
 254,0,No registrations at this time.,RFC3692-style Experiment 2,[RFC4727]
-255,0,UnKnow,Reserved,[JBP]
-44-252,Unassigned,
+255,0,UnKnown,Reserved,[JBP]

@@ -19,8 +19,8 @@ class CICMP:
         Type = data[0]
         Code = data[1]
         CheckSum = int.from_bytes(data[2:4])
-        self.ICMPData['Type'] = Type
-        self.ICMPData['Code'] = Code
+        self.ICMPData['Type'] = next((row['Type Name'] for row in config.listICMPProtocol if str(Type) in row['Type']), "Unassigned")
+        self.ICMPData['Code'] = next((row['Code Description'] for row in config.listICMPProtocol if (str(Type) in row['Type']) and (str(Code) in row['Code'])), "Unassigned")
         self.ICMPData['Check Sum'] = CheckSum
 
         # Echo Reply or Echo Request
@@ -41,7 +41,7 @@ class CICMP:
             if Version != 4:
                 raise Exception("IP Protocol is Not 4(ICMP)")
             IHL = (VIHL & 0x0F) * 4 # IP Header Len
-            ClassIPv4 = CIPV4Header()
+            ClassIPv4 = CIPV4()
             ClassIPv4.deserializeData(data[8:8 + IHL])
             self.ICMPData.update(ClassIPv4.getData())
             ## Factory Pattern으로 업데이트(완)
