@@ -40,6 +40,9 @@ class CMAC:
     
     def getTargetProtocol(self):
         return self.MACHeader['Target Protocol']
+    
+    def addDataForUnknownType(self, data : dict):
+        self.MACHeader.update(data)
         
     def __converBytetoMACAddress(self, macAddress):
         return ':'.join(['%02x' % b for b in macAddress])
