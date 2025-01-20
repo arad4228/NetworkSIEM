@@ -69,14 +69,15 @@ class CTCP(CTransport):
         jsonData = json.dumps(self.TCPData, sort_keys=False, indent=4)
         print(jsonData)
 
-    def getNextProtocol(self, TCPStart, TotalSize):
-        Port = self.TCPData['Destination Port']
-        if self.getDataLocation(TCPStart) == TotalSize:
-            return "TCP"
+    def getNextProtocol(self):
+        SourcePort = self.TCPData['Source Port']
+        DestinationPort = self.TCPData['Destination Port']
         
         # if Destination Port is Well Known Prots
         ProtocolType = self.getProtocolType()
-        NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(Port) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "TCP")
+        NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(SourcePort) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "Unknown")
+        if NextProtocol == "Unknown":
+                NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(DestinationPort) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "TCP")
         return NextProtocol
     
     def getData(self):
@@ -90,6 +91,8 @@ class CUDP(CTransport):
     def __init__(self):
         super().__init__("udp")
         self.UDPData = OrderedDict()
+        if len(config.listWellKnownPort) == 0:
+            self.__readWellKnownPortCSV()
 
     def deserializeData(self, data):
         self.UDPData['Source Port'] = int.from_bytes(data[0:2])
@@ -106,17 +109,27 @@ class CUDP(CTransport):
         print(jsonData)
 
     def getDataLocation(self, Start):
-        return Start + self.UDPData['Length'] * 4
+        return Start + 8        # UDP header Fixed Len
 
-    def getNextProtocol(self, UDPStart, TotalSize):
+    def getNextProtocol(self):
         # if Destination Port is Well Known Prots
-        Port = self.UDPData['Destination Port']
-        if self.getDataLocation(UDPStart) == TotalSize:
-            return "UDP"
+        SourcePort = self.UDPData['Source Port']
+        DestinationPort = self.UDPData['Destination Port']
         
         ProtocolType = self.getProtocolType()
-        NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(Port) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "UDP")
+        # print(DestinationPort)
+        # print(SourcePort)
+        NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (ProtocolType in row['Transport Protocol']) and (str(SourcePort) in row['Port Number'])), "UnKnown")
+        if NextProtocol == "UnKnown":
+            NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (ProtocolType in row['Transport Protocol']) and (str(DestinationPort) in row['Port Number'])), "UDP")
+        if NextProtocol == "UDP" and self.UDPData['Length'] == 8:
+            return "End of UDP"
+
         return NextProtocol
     
     def getData(self):
         return self.UDPData
+    
+    def __readWellKnownPortCSV(self):
+        with open("./Resource/Well_Known_Ports.csv", 'r') as f:
+            config.listWellKnownPort = list(csv.DictReader(f))

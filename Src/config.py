@@ -13,7 +13,8 @@ listIPV4Protocol = {1: "Internet Control Message Protocol",
 listIPV6NextHeader = list()
 listWellKnownPort = list()
 listICMPProtocol = list()
-
+listDNSRRType = list()
+listDNSOPCodeClassType = list()
 
 ## 각종 프로토콜 패킷 고정 길이 데이터
 nMACProtocolLen = 14

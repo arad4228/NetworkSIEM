@@ -1,0 +1,24 @@
+Opcode,OpCodeName,RCODE,Name,Description,Reference,ClassDecimal,ClassName
+0,Query,0,NoError,No Error,[RFC1035],0,Reserved
+1,"IQuery (Inverse Query OBSOLETE)",1,FormErr,Format Error,[RFC1035],1,Internet (IN)
+2,Status,2,ServFail,Server Failure,[RFC1035],2,Unassigned
+3,Unassigned,3,NXDomain,Non-Existent Domain,[RFC1035],3,Chaos (CH)
+4,Notify,4,NotImp,Not Implemented,[RFC1035],4,Hesiod (HS)
+5,Update,5,Refused,Query Refused,[RFC1035],254,QCLASS NONE
+6,DNS Stateful Operations (DSO),6,YXDomain,Name Exists when it should not,[RFC2136][RFC6672],255,QCLASS * (ANY)
+7,Unassigned,7,YXRRSet,RR Set Exists when it should not,[RFC2136],65535,Reserved
+8,Unassigned,8,NXRRSet,RR Set that should exist does not,[RFC2136]
+9,Unassigned,9,NotAuth,Server Not Authoritative for zone,[RFC2136]
+10,Unassigned,10,NotZone,Name not contained in zone,[RFC2136]
+11,Unassigned,11,DSOTYPENI,DSO-TYPE Not Implemented,[RFC8490]
+12,Unassigned,16,BADVERS|BADSIG,Bad OPT Version|TSIG Signature Failure,[RFC6891]|[RFC8945]
+13,Unassigned,17,BADKEY,Key not recognized,[RFC8945]
+14,Unassigned,18,BADTIME,Signature out of time window,[RFC8945]
+15,Unassigned,19,BADMODE,Bad TKEY Mode,[RFC2930]
+,,20,BADNAME,Duplicate key name,[RFC2930]
+,,21,BADALG,Algorithm not supported,[RFC2930]
+,,22,BADTRUNC,Bad Truncation,[RFC8945]
+,,23,BADCOOKIE,Bad/missing Server Cookie,[RFC7873]
+,,65535,"Reserved, can be allocated by Standards Action",,[RFC6895]
+24-3840,Unassigned,,
+3841-4095,Reserved for Private Use,,[RFC6895]
