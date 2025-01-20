@@ -14,4 +14,5 @@
 | Packet(ARP)       | [ARP Data](https://www.iana.org/assignments/arp-parameters/arp-parameters.xhtml) | ARP 프로토콜의 파라미터 데이터 제공 |
 | Packet(Port)      | [Well-Known Port](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml) | 잘 알려진 포트와 서비스 간 정의 데이터를 받아와 사용 |
 | Packet(ICMP)      | [ICMP](https://www.iana.org/assignments/icmp-parameters/icmp-parameters.xhtml) | 각종 ICMP 파라미터와 그에 대한 스펙 제공 |
+| Packet(DNS)       | [DNS Compress](https://mislove.org/teaching/cs4700/spring11/handouts/project1-primer.pdf)     | DNS Compression관련 설명                         |
 | Packet            | [Wikipedia](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) | 각종 패킷 구조 정의 제공      |
