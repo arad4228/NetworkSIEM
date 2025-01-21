@@ -15,6 +15,17 @@ listWellKnownPort = list()
 listICMPProtocol = list()
 listDNSRRType = list()
 listDNSOPCodeClassType = list()
+listSvcParamkeys = {
+    0: "mandatory",
+    1: "alpn",
+    2: "no-default-alpn",
+    3: "port",
+    4: "ipv4hint",
+    5: "ech",
+    6: "ipv6hint",
+    7: "dohpath",
+    8: "ohttp",
+}
 
 ## 각종 프로토콜 패킷 고정 길이 데이터
 nMACProtocolLen = 14

@@ -60,7 +60,6 @@ class CDNS(CApplication):
         # DNS Answer
         start = end
         for i in range(Answer):
-            # 마지막은 IP주소를 뱉고 끝남.
             InnerDict = OrderedDict()
             start, end, Name, nName = self.__deserializeName(data, start)
             Type = int.from_bytes(data[start:start+2])      # 2 bytes
@@ -78,24 +77,7 @@ class CDNS(CApplication):
             InnerDict['Class'] = convertedClass
             InnerDict['TTL'] = TTL
             InnerDict['DataLen'] = DataLen
-            ret = self.__deserilizeTYPE(convertedType, data, start, DataLen)
-            if convertedType == "A":
-                InnerDict['Address'] = ret
-            elif convertedType == "CNAME":
-                InnerDict['CNAME'] = ret
-            elif convertedType == "HTTPS":
-                InnerDict['SvcPriority'] = int.from_bytes(data[start:end])  # 2 bytes
-                InnerDict['TargetName'] = data[start+3]                     # 1 bytes
-                end += 3
-                start = end
-                SecondDict = OrderedDict()
-                SecondDict['SvcParamKey'] = int.from_bytes(data[start:start+2])     # 2bytes
-                SecondDict['SvcParamValue length'] = int.from_bytes(data[start+2:start+4])   # 2bytes(total Len)
-                SecondDict['ALPN1 length'] = data[start+4]
-                SecondDict['ALPN1'] = data[start+5:start+7].decode("UTF-8")
-                SecondDict['ALPN2 length'] = data[start+7]
-                SecondDict['ALPN2'] = data[start+8:start+10].decode("UTF-8")
-                InnerDict['SvcParam'] = SecondDict
+            InnerDict = self.__deserilizeTYPE(convertedType, data, start, DataLen, InnerDict)
             self.DNS[f'Answer {i+1}'] = InnerDict
             end += DataLen
             start = end
@@ -145,15 +127,28 @@ class CDNS(CApplication):
         IStart = IEnd
         return IStart, IEnd, Name, nName
 
-    def __deserilizeTYPE(self, Type, data, start, nData):
+    def __deserilizeTYPE(self, Type, data, start, nData, InnerDict):
         # A Type = IPaddr        
         if Type == "A":
-            return socket.inet_ntoa(data[start:start+nData])
+            InnerDict['Address'] = socket.inet_ntoa(data[start:start+nData])
         elif Type == "CNAME":
             t1, t2, CName, t3 = self.__deserializeName(data, start, start+nData)
-            return CName
-        else:
-            pass
+            InnerDict['CNAME'] = CName
+        elif Type == "HTTPS":
+            end = start
+            InnerDict['SvcPriority'] = int.from_bytes(data[start:end])  # 2 bytes
+            InnerDict['TargetName'] = data[start+3]                     # 1 bytes
+            end += 3
+            start = end
+            SecondDict = OrderedDict()
+            SecondDict['SvcParamKey'] = config.listSvcParamkeys.get(int.from_bytes(data[start:start+2]), int.from_bytes(data[start:start+2]))     # 2bytes
+            SecondDict['SvcParamValue length'] = int.from_bytes(data[start+2:start+4])   # 2bytes(total Len)
+            SecondDict['ALPN1 length'] = data[start+4]
+            SecondDict['ALPN1'] = data[start+5:start+7].decode("UTF-8")
+            SecondDict['ALPN2 length'] = data[start+7]
+            SecondDict['ALPN2'] = data[start+8:start+10].decode("UTF-8")
+            InnerDict['SvcParam'] = SecondDict
+        return InnerDict
 
     def __readDNSDataCSV(self):
         with open("./Resource/DNSResolutionRecordType.csv", 'r') as f:
