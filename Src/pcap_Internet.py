@@ -7,10 +7,11 @@ import csv
 
 # interface
 class CInternet(ABC):
-    def __init__(self, Protocol):
+    def __init__(self, Protocol, start):
         super().__init__()
         self.IsFragment = False
         self.ProtocolName = Protocol
+        self.start = start
     
     @abstractmethod
     def deserializeData(self, data):
@@ -29,20 +30,20 @@ class CInternet(ABC):
 
 class CInternetFactory:        
     @staticmethod
-    def getNextProtocol(Protocol, Version=""):
+    def getNextProtocol(Protocol, start, Version=""):
         if "ARP" in Protocol:
-            return CARP()
+            return CARP(start)
         elif "RARP" in Protocol:
-            return CRARP()
+            return CRARP(start)
         elif "IP" in Protocol:
             if Version == 4:
-                return CIPV4()
+                return CIPV4(start)
             elif Version == 6:
-                return CIPV6()
+                return CIPV6(start)
 
 class CARP(CInternet):
-    def __init__(self):
-        super().__init__("ARP")
+    def __init__(self, start):
+        super().__init__("ARP", start)
         self.ARPData = OrderedDict()
         if len(config.listMACHardwareType) == 0:
             self.__readARPDataCSV()
@@ -87,8 +88,8 @@ class CARP(CInternet):
         return ':'.join(['%02x' % b for b in macAddress])
 
 class CRARP(CInternet):
-    def __init__(self):
-        super().__init__("RARP")
+    def __init__(self, start):
+        super().__init__("RARP", start)
         self.RARPData = OrderedDict()
         if len(config.listMACHardwareType) == 0:
             self.__readRARPDataCSV()
@@ -133,8 +134,8 @@ class CRARP(CInternet):
         return ':'.join(['%02x' % b for b in macAddress])
 
 class CIPV4(CInternet):
-    def __init__(self):
-        super().__init__("IPv4")
+    def __init__(self, start):
+        super().__init__("IPv4", start)
         self.IPData = OrderedDict()
 
     def deserializeData(self, data): # Ethernet 뒤에 부터 마지막까지만 있음.
@@ -170,8 +171,8 @@ class CIPV4(CInternet):
         return self.IPData
     
 class CIPV6(CInternet):
-    def __init__(self):
-        super().__init__("IPv6")
+    def __init__(self, start):
+        super().__init__("IPv6", start)
         self.IPData = OrderedDict()
         if len(config.listIPV6NextHeader) == 0:
             self.__readIPV6NextHeaderCSV()

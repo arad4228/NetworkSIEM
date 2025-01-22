@@ -5,9 +5,10 @@ import json
 import csv
 
 class CTransport(ABC):
-    def __init__(self, TransType):
+    def __init__(self, TransType, start):
         super().__init__()
         self.TransportType = TransType
+        self.start = start
 
     @abstractmethod
     def deserializeData(self, data):
@@ -22,23 +23,26 @@ class CTransport(ABC):
         pass
 
     @abstractmethod
-    def getDataLocation(self, Start):
+    def getDataLocation(self):
         pass
 
     def getProtocolType(self):
         return self.TransportType
     
+    def getProtocolStart(self):
+        return self.start
+    
 class CTransportFactory:
     @staticmethod
-    def getNextProtocol(Type):
+    def getNextProtocol(Type, start):
         if Type == "Transmission Control Protocol":
-            return CTCP()
+            return CTCP(start)
         elif Type == "User Datagram Protocol":
-            return CUDP()
+            return CUDP(start)
 
 class CTCP(CTransport):
-    def __init__(self):
-        super().__init__("tcp")
+    def __init__(self, start):
+        super().__init__("tcp", start)
         self.TCPData = OrderedDict()
         if len(config.listWellKnownPort) == 0:
             self.__readWellKnownPortCSV()
@@ -62,8 +66,9 @@ class CTCP(CTransport):
         if DataOffset > 5: # Options 필드가 있다면, 그냥 묶어서 hex화.
             self.TCPData['Options'] = data[20: 20 + DataOffset*4].hex()
 
-    def getDataLocation(self, Start):
-        return Start + self.TCPData['Data Offset'] * 4
+    def getDataLocation(self):
+        start = self.getProtocolStart()
+        return start + self.TCPData['Data Offset'] * 4
     
     def printData(self):
         jsonData = json.dumps(self.TCPData, sort_keys=False, indent=4)
@@ -88,8 +93,8 @@ class CTCP(CTransport):
             config.listWellKnownPort = list(csv.DictReader(f))
 
 class CUDP(CTransport):
-    def __init__(self):
-        super().__init__("udp")
+    def __init__(self, start):
+        super().__init__("udp", start)
         self.UDPData = OrderedDict()
         if len(config.listWellKnownPort) == 0:
             self.__readWellKnownPortCSV()
@@ -108,8 +113,9 @@ class CUDP(CTransport):
         jsonData = json.dumps(self.UDPData, sort_keys=False, indent=4)
         print(jsonData)
 
-    def getDataLocation(self, Start):
-        return Start + 8        # UDP header Fixed Len
+    def getDataLocation(self):
+        start = self.getProtocolStart()
+        return start + 8        # UDP header Fixed Len
 
     def getNextProtocol(self):
         # if Destination Port is Well Known Prots

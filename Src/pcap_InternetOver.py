@@ -8,10 +8,11 @@ import json
 import datetime
 
 class CICMP:
-    def __init__(self):
+    def __init__(self, start):
         self.ICMPData = OrderedDict()
         if len(config.listICMPProtocol) == 0:
             self.__readICMPParameter()
+        self.start = start
 
     # 모든 패킷을 전부 주기
     def deserializeData(self, data):
@@ -52,6 +53,9 @@ class CICMP:
     def printData(self):
         jsonData = json.dumps(self.ICMPData, sort_keys=False, indent=4)
         print(jsonData)
+
+    def getProtocolStart(self):
+        return self.start
 
     def __readICMPParameter(self):
         with open("./Resource/ICMPParameters.csv", 'r') as f:

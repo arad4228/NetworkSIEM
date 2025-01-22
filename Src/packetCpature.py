@@ -29,7 +29,7 @@ def packet_controller(header, pkt_data):
     Version = VIHL >> 4
     # Cisco와 같은 안알려진 데이터 처리를 위한 예외 처리 도입 필요
     try:
-        InternetProtocol = CInternetFactory.getNextProtocol(classMACHeader.getTargetProtocol(), Version)
+        InternetProtocol = CInternetFactory.getNextProtocol(classMACHeader.getTargetProtocol(), start, Version)
         if InternetProtocol == None:
             raise Exception(f"등록되지않은 EtherType: {classMACHeader.getTargetProtocol()}")
     except Exception as e:
@@ -59,7 +59,7 @@ def packet_controller(header, pkt_data):
     # classIPHeader.printData()
 
     start = end
-    TransportProtocol = CTransportFactory.getNextProtocol(InternetProtocol.getNextProtocol())
+    TransportProtocol = CTransportFactory.getNextProtocol(InternetProtocol.getNextProtocol(), start)
     if TransportProtocol == None:
         return
     if TransportProtocol.getProtocolType() == 'Internet Control Message Protocol':
@@ -131,7 +131,7 @@ def getPacketData(device, workType, file):
 if __name__ == "__main__":
     device = "en7"
     typeWork = "Test"   # Test / Nomal
-    file = "./TestFile/TestDNS.pcap"
+    file = "./TestFile/TestHTTP.pcap"
     try:
         getPacketData(device, typeWork, file)
     except KeyboardInterrupt:
