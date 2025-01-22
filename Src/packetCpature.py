@@ -81,9 +81,9 @@ def packet_controller(header, pkt_data):
             end += UDPLength
             TransportData = bytes(pkt_data[start:end])
     TransportProtocol.deserializeData(TransportData)
-    # print(f"({TransportProtocol.getProtocolType()})Next Protocol is {TransportProtocol.getNextProtocol()}")
+    # print(f"({TransportProtocol.getProtocolType()})Next Protocol is {TransportProtocol.getNextProtocol(header.contents.len)}")
 
-    if TransportProtocol.getNextProtocol() == "Domain Name Server":
+    if TransportProtocol.getNextProtocol(header.contents.len) == "Domain Name Server":
         start = TransportProtocol.getDataLocation(start)
         end = header.contents.len
         DNSdata = bytes(pkt_data[start:end])

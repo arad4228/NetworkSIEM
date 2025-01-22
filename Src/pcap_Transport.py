@@ -19,7 +19,7 @@ class CTransport(ABC):
         pass
 
     @abstractmethod
-    def getNextProtocol(self):
+    def getNextProtocol(self, pktEnd):
         pass
 
     @abstractmethod
@@ -74,15 +74,17 @@ class CTCP(CTransport):
         jsonData = json.dumps(self.TCPData, sort_keys=False, indent=4)
         print(jsonData)
 
-    def getNextProtocol(self):
+    def getNextProtocol(self, pktEnd):
         SourcePort = self.TCPData['Source Port']
         DestinationPort = self.TCPData['Destination Port']
-        
-        # if Destination Port is Well Known Prots
         ProtocolType = self.getProtocolType()
+        ProtocolEnd = self.start +  self.TCPData['Data Offset'] * 4
+        if ProtocolEnd == pktEnd:
+            return ProtocolType
+        
         NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(SourcePort) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "Unknown")
         if NextProtocol == "Unknown":
-                NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(DestinationPort) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "TCP")
+            NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (str(DestinationPort) in row['Port Number']) and (ProtocolType in row['Transport Protocol'])), "TCP")
         return NextProtocol
     
     def getData(self):
@@ -117,14 +119,15 @@ class CUDP(CTransport):
         start = self.getProtocolStart()
         return start + 8        # UDP header Fixed Len
 
-    def getNextProtocol(self):
+    def getNextProtocol(self, pktEnd):
         # if Destination Port is Well Known Prots
         SourcePort = self.UDPData['Source Port']
-        DestinationPort = self.UDPData['Destination Port']
-        
+        DestinationPort = self.UDPData['Destination Port']        
         ProtocolType = self.getProtocolType()
-        # print(DestinationPort)
-        # print(SourcePort)
+        ProtocolEnd = self.start + self.UDPData['Length']
+        if ProtocolEnd == pktEnd:
+            return ProtocolType
+
         NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (ProtocolType in row['Transport Protocol']) and (str(SourcePort) in row['Port Number'])), "UnKnown")
         if NextProtocol == "UnKnown":
             NextProtocol = next((row['Description'] for row in config.listWellKnownPort if (ProtocolType in row['Transport Protocol']) and (str(DestinationPort) in row['Port Number'])), "UDP")
